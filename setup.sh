@@ -13,6 +13,48 @@ sudo dscl . -passwd /Users/runneradmin P@ssw0rd!
 sudo dscl . -passwd /Users/runneradmin P@ssw0rd!
 sudo createhomedir -c -u runneradmin > /dev/null
 sudo dscl . -append /Groups/admin GroupMembership runneradmin
+
+## Set whether the computer responds to events sent by other computers (such as AppleScripts and ARD reporting).
+echo -e "\n## Set whether the computer responds to events sent by other computers (such as AppleScripts and ARD reporting)."
+echo -e "systemsetup -setremoteappleevents on\n"
+sudo systemsetup -setremoteappleevents on
+
+## Enable remote login
+echo -e "\n## Enable remote login"
+echo -e "sudo dseditgroup -o create -q com.apple.access_ssh ## (this allows you to use the dseditgroup command)\n"
+sudo dseditgroup -o create -q com.apple.access_ssh ## (this allows you to use the dseditgroup command)
+echo -e "sudo dseditgroup -o edit -a ADMINUSERNAME -t user com.apple.access_ssh  ## (this allows you to add a specific user replace test with your user)\n"
+sudo dseditgroup -o edit -a ADMINUSERNAME -t user com.apple.access_ssh  ## (this allows you to add a specific user replace test with your user)
+echo -e "sudo systemsetup -setremotelogin on ## Sets remote login (SSH) on or off.\n"
+sudo systemsetup -setremotelogin on ## Sets remote login (SSH) on or off.
+
+## Enable remote desktop for specific users
+echo -e "\n## Enable remote desktop for specific users"
+echo -e "sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -allowAccessFor -specifiedUsers\n"
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -allowAccessFor -specifiedUsers
+
+## specify users
+echo -e "\n## specify users"
+echo -e "sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -users ADMINUSERNAME -access -on -privs -all -setmenuextra -menuextra yes -restart -agent\n"
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -users ADMINUSERNAME -access -on -privs -all -setmenuextra -menuextra yes -restart -agent
+
+## Set whether the server restarts automatically after a power failure.
+echo -e "\n## Set whether the server restarts automatically after a power failure."
+echo -e "sudo systemsetup -setrestartpowerfailure on\n"
+sudo systemsetup -setrestartpowerfailure on
+
+## Set whether the computer will wake from sleep when a network admin packet is sent to it.
+echo -e "\n## Set whether the computer will wake from sleep when a network admin packet is sent to it."
+echo -e "sudo systemsetup -setwakeonnetworkaccess on\n"
+sudo systemsetup -setwakeonnetworkaccess on
+
+## Restart the ARD Agent and helper:
+echo -e "\n## Restart the ARD Agent and helper:"
+echo -e "sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent\n"
+sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent
+
+sudo jamf policy -trigger recon
+
 #Enable VNC
 sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -allowAccessFor -allUsers -privs -all
 sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -configure -clientopts -setvnclegacy -vnclegacy yes 
