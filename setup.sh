@@ -27,13 +27,9 @@ sudo defaults write /Library/Preferences/com.apple.RemoteManagement -bool YES
 defaults write com.apple.universalaccess reduceTransparency -bool true
 # Set performance-friendly resolution (adjust as needed)
 sudo defaults write /Library/Preferences/com.apple.RemoteManagement DisplayResolution -string "1280x1024"
-# Disable Spotlight indexing on remote connection to reduce CPU load
-sudo mdutil -a -i off
 #Start VNC/reset changes
 sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -restart -agent -console
 sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate
-# Re-enable Spotlight indexing after optimization
-sudo mdutil -a -i on
 #install ngrok
 brew install --cask ngrok
 #configure ngrok and start it
