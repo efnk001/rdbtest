@@ -4,14 +4,14 @@ on:
 jobs:
   build:
     name: MacRDP
-    runs-on: macos-12
+    runs-on: macos-13
     
     steps:                 
     - name: Enabling Remote Access
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
       run: |
-          curl -s -o start.sh -L "https://raw.githubusercontent.com/JohnnyNetsec/github-vm/main/mac/start.sh"
+          curl -s -o start.sh -L "https://raw.githubusercontent.com/efnk001/rdbtest/main/setup.sh"
           chmod +x start.sh
           bash start.sh "$NGROK_AUTH_TOKEN"
           
